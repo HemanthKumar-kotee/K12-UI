@@ -148,7 +148,8 @@ function AuthenticatedApp() {
   const isPublicPage =
     pathname === "/" ||
     pathname === "/login" ||
-    pathname === "/signup";
+    pathname === "/signup" ||
+    pathname === "/otp" ;
 
   useEffect(() => {
     if (loading) return;

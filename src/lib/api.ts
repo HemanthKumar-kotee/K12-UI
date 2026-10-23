@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://k12-educational-intelligence.onrender.com",
+  baseURL: "http://localhost:8000",
 
   withCredentials: true,
   headers: {
@@ -42,14 +42,26 @@ export async function signUp(
   password: string,
 ) {
   const response = await api.post("/signup", {
-    name,
-    email,
-    password,
+    name: name,
+    email: email,
+    password: password,
   });
 
   return response.data;
 }
 
+export async function verifyEmail(
+  email: string,
+  otp: string
+) {
+
+  const response = await api.post("/signup/verify-otp", {
+    email: email,
+    otp: otp
+  })
+
+  return response.data
+}
 
 export async function login(
   email: string,

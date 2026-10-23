@@ -12,6 +12,7 @@ import {
   login as loginApi,
   signUp as signUpApi,
   logout as logoutApi,
+  verifyEmail as verifyEmailAPI,
   type AuthUser,
 } from "@/lib/api";
 
@@ -20,6 +21,7 @@ type AuthContextType = {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   signUp: (name: string, email: string, password: string) => Promise<void>;
+  verifyEmail: (email: string, otp: string) => Promise<void>,
   logout: () => Promise<void>;
 };
 
@@ -55,9 +57,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function signUp(name: string, email: string, password: string) {
-    await signUpApi(name, email, password);
+    await signUpApi(
+      name, 
+      email.trim().toLowerCase(), 
+      password);
+  }
+
+  async function verifyEmail(email: string, otp: string) {
+    
+    await verifyEmailAPI(
+      email.trim().toLowerCase(), 
+      otp.trim()
+    );
+
     const currentUser = await getCurrentUser();
     setUser(currentUser);
+
   }
 
   async function logout() {
@@ -70,7 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, login, signUp, logout }}
+      value={{ user, loading, login, signUp, logout, verifyEmail }}
     >
       {children}
     </AuthContext.Provider>
